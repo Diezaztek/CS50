@@ -61,5 +61,4 @@ class Graph():
         plt.axis("off")
         plt.savefig(file)
         plt.show()
-        
 

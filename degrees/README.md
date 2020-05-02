@@ -28,7 +28,7 @@ We can frame this as a search problem: our states are people. Our actions are mo
 
 - python==3.7.4
 - matplotlib==3.1.1
-- networkx==2.3
+- networkx==2.4
 
 Those are the versions used in the development, you can use others but no garantee it will works as expected
 
