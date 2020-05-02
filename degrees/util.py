@@ -40,16 +40,23 @@ class QueueFrontier():
 
 class Graph():
     
-    def __init__(self, edges):
+    def __init__(self, edges, path):
         self.__G = nx.Graph()
         edges_names = list(edges)
         self.__G.add_edges_from(edges_names)
         self.__edges = edges
         
-    def draw_graph(self, file):
+        self.__color_map = []
+        for node in self.__G:
+            if node in path:
+                self.__color_map.append("green")
+            else:
+                self.__color_map.append("blue")
+        
+    def draw_graph(self, file):    
         pos = nx.spring_layout(self.__G)
-        plt.figure(figsize=(10,10))
-        nx.draw(self.__G, pos, with_labels=True)
+        plt.figure(figsize=(50,50))
+        nx.draw(self.__G, pos, node_color=self.__color_map, with_labels=True)
         nx.draw_networkx_edge_labels(self.__G, pos, edge_labels=self.__edges)
         plt.axis("off")
         plt.savefig(file)

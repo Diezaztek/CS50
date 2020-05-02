@@ -56,7 +56,7 @@ def load_data(directory):
 def main():
     if len(sys.argv) > 2:
         sys.exit("Usage: python degrees.py [directory]")
-    directory = sys.argv[1] if len(sys.argv) == 2 else "large"
+    directory = sys.argv[1] if len(sys.argv) == 2 else "small"
 
     # Load data from files into memory
     print("Loading data...")
@@ -103,7 +103,7 @@ def shortest_path(source, target):
     while True:
   
         if frontier.empty():
-            graph = Graph(edges)
+            graph = Graph(edges, [])
             graph.draw_graph("my_graph.png")
             return None
         
@@ -113,14 +113,18 @@ def shortest_path(source, target):
         
         if node.get_person_id() == target:
             path = []
+            path_name_labels = [people[source]["name"]]
             
             while node.get_parent() is not None:
                 path.append([node.get_movie_id(), node.get_person_id()])
+                path_name_labels.append(people[node.get_person_id()]["name"])
                 node = node.get_parent()
             
             path.reverse()
-            graph = Graph(edges)
+            
+            graph = Graph(edges, path_name_labels)
             graph.draw_graph("my_graph.png")
+            
             return path
         else:
             nodes_explored.append(node.get_person_id())
@@ -173,6 +177,7 @@ def neighbors_for_person(person_id):
     who starred with a given person.
     """
     movie_ids = people[person_id]["movies"]
+    print(movie_ids)
     neighbors = set()
     for movie_id in movie_ids:
         for person_id in movies[movie_id]["stars"]:
