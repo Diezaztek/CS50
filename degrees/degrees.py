@@ -123,7 +123,7 @@ def shortest_path(source, target):
             path.reverse()
             
             graph = Graph(edges, path_name_labels)
-            graph.draw_graph("my_graph.png")
+            graph.draw_graph("output_graph.png")
             
             return path
         else:
@@ -177,7 +177,6 @@ def neighbors_for_person(person_id):
     who starred with a given person.
     """
     movie_ids = people[person_id]["movies"]
-    print(movie_ids)
     neighbors = set()
     for movie_id in movie_ids:
         for person_id in movies[movie_id]["stars"]:

@@ -26,9 +26,11 @@ We can frame this as a search problem: our states are people. Our actions are mo
 
 ### Prerequisites
 
-```
-python3
-```
+*python==3.7.4
+*matplotlib==3.1.1
+*networkx==2.3
+
+Those are the versions used in the development, you can use others but no garantee it will works as expected
 
 ### Installation
 
@@ -37,14 +39,34 @@ Clone the repository and change to the current directory
 ```
 git clone https://github.com/Diezaztek/CS50.git
 cd degrees
-
 ```
 
-Run the program using python 
+Run the program using the terminal, if no argument is passed, large is taken by default
 
 ```
 python degrees.py ["small"|"large"]
-
 ```
 
-if no argument is passed, large is taken by default
+## Examples
+
+```
+$ python degrees.py small
+Loading data...
+Data loaded.
+Name: kevin bacon
+Name: tom hanks
+Calculating...
+1 degrees of separation.
+1: Kevin Bacon and Tom Hanks starred in Apollo 13
+```
+
+Additionally to the console output, a file will be generated showing the search graph and the chosen path
+
+![Output graph example](result_graph_example.png)
+
+**Note** You can change de size of the output graph by editing the util.py in line 58
+```
+plt.figure(figsize=(50,50))
+```
+
+The size will depends on how big are the graph you are analizing 
