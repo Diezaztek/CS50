@@ -2,7 +2,7 @@ import csv
 import sys
 
 
-from util import Node, QueueFrontier
+from util import Node, QueueFrontier, Graph
 
 # Maps names to a set of corresponding person_ids
 names = {}
@@ -96,15 +96,22 @@ def shortest_path(source, target):
     node = Node(source, None, None)
     frontier.add(node)
     nodes_explored = []
+    
+    #Lists for storing the graphs elements to then draw it
+    edges = []
 
     print("Calculating...")
     
     while True:
   
         if frontier.empty():
+            graph = Graph(edges)
+            graph.draw_graph("my_graph.png")
             return None
         
         node = frontier.remove()
+        
+        node_person_name = people[node.get_person_id()]["name"]
         
         if node.get_person_id() == target:
             path = []
@@ -113,14 +120,23 @@ def shortest_path(source, target):
                 path.append([node.get_movie_id(), node.get_person_id()])
                 node = node.get_parent()
             
-            path.reverse() 
+            path.reverse()
+            graph = Graph(edges)
+            graph.draw_graph("my_graph.png")
             return path
         else:
             nodes_explored.append(node.get_person_id())
             
             for movie_id, person_id in neighbors_for_person(node.get_person_id()):
+                
+                child = Node(person_id, node, movie_id)
+                
+                child_person_name = people[child.get_person_id()]["name"]
+                
+                if(node_person_name != child_person_name):
+                    edges.append((node_person_name, child_person_name))
+                
                 if not frontier.contains_state(person_id) and person_id not in nodes_explored:
-                    child = Node(person_id, node, movie_id)
                     frontier.add(child)
 
              

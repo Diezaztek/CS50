@@ -1,3 +1,6 @@
+import networkx as nx
+import matplotlib.pyplot as plt
+
 class Node():
     def __init__(self, person_id, parent, movie_id):
         self.__person_id = person_id
@@ -35,4 +38,20 @@ class QueueFrontier():
             self.frontier = self.frontier[1:]
             return node
 
+class Graph():
+    
+    def __init__(self, edges):
+        self.__G = nx.Graph()
+        self.__G.add_edges_from(edges)
+        
+    def draw_graph(self, file):
+        '''pos=nx.get_node_attributes(self.__G,'pos')
+        nx.draw(self.__G,pos)
+        labels = nx.get_edge_attributes(self.__G,'weight')
+        nx.draw_networkx_edge_labels(self.__G,pos,edge_labels=labels)
+        nx.draw_networkx_labels(self.__G, pos)
+        plt.savefig(file)    '''
+        nx.draw(self.__G, with_labels=True)
+        plt.savefig(file)
+        
 
