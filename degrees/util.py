@@ -42,16 +42,17 @@ class Graph():
     
     def __init__(self, edges):
         self.__G = nx.Graph()
-        self.__G.add_edges_from(edges)
+        edges_names = list(edges)
+        self.__G.add_edges_from(edges_names)
+        self.__edges = edges
         
     def draw_graph(self, file):
-        '''pos=nx.get_node_attributes(self.__G,'pos')
-        nx.draw(self.__G,pos)
-        labels = nx.get_edge_attributes(self.__G,'weight')
-        nx.draw_networkx_edge_labels(self.__G,pos,edge_labels=labels)
-        nx.draw_networkx_labels(self.__G, pos)
-        plt.savefig(file)    '''
-        nx.draw(self.__G, with_labels=True)
+        pos = nx.spring_layout(self.__G)
+        plt.figure(figsize=(10,10))
+        nx.draw(self.__G, pos, with_labels=True)
+        nx.draw_networkx_edge_labels(self.__G, pos, edge_labels=self.__edges)
+        plt.axis("off")
         plt.savefig(file)
+        plt.show()
         
 

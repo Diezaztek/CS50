@@ -56,7 +56,7 @@ def load_data(directory):
 def main():
     if len(sys.argv) > 2:
         sys.exit("Usage: python degrees.py [directory]")
-    directory = sys.argv[1] if len(sys.argv) == 2 else "small"
+    directory = sys.argv[1] if len(sys.argv) == 2 else "large"
 
     # Load data from files into memory
     print("Loading data...")
@@ -96,9 +96,7 @@ def shortest_path(source, target):
     node = Node(source, None, None)
     frontier.add(node)
     nodes_explored = []
-    
-    #Lists for storing the graphs elements to then draw it
-    edges = []
+    edges = dict()
 
     print("Calculating...")
     
@@ -132,9 +130,10 @@ def shortest_path(source, target):
                 child = Node(person_id, node, movie_id)
                 
                 child_person_name = people[child.get_person_id()]["name"]
+                movie_name = movies[child.get_movie_id()]["title"]
                 
                 if(node_person_name != child_person_name):
-                    edges.append((node_person_name, child_person_name))
+                    edges[(node_person_name, child_person_name)] = movie_name
                 
                 if not frontier.contains_state(person_id) and person_id not in nodes_explored:
                     frontier.add(child)
