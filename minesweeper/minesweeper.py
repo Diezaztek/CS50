@@ -232,14 +232,37 @@ class MinesweeperAI():
             self.mines = self.mines|knowledge.known_mines()
             self.safes = self.safes|knowledge.known_safes()
         
-        for knowledge in self.knowledge:
+        print("Calculating new formulas...")
+        for i in range(len(self.knowledge)):
+            for j in range(len(self.knowledge)):
+                if i != j:
+                    set1 = self.knowledge[i].cells
+                    set2 = self.knowledge[j].cells
+                    mines1 = self.knowledge[i].count
+                    mines2 = self.knowledge[j].count
+                    if set1.issubset(set2):
+                        new_cells = set2 - set1 
+                        new_count = mines2 - mines1
+                        new_sentence = Sentence(new_cells, new_count)
+                        is_new_knowledge = True
+                        for sentence in self.knowledge:
+                            if new_sentence.__str__() == sentence.__str__():
+                                is_new_knowledge = False
+                                break
+                        if is_new_knowledge:
+                            self.knowledge.append(new_sentence)
+        
+        print(self.mines)
+        
+        '''for knowledge in self.knowledge:
             print(knowledge.__str__())
             print("Places with mines: ", knowledge.known_mines())
             print("Places safe: ", knowledge.known_safes())
             
         print("********************")
         print("Mines: ",self.mines)
-        print("Saves: ",self.safes)
+        print("Saves: ",self.safes)'''
+        print(f"Knowledge lenght: {len(self.knowledge)}")
         
 
     def make_safe_move(self):
