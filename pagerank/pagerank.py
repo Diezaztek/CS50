@@ -8,17 +8,21 @@ SAMPLES = 10000
 
 
 def main():
-    if len(sys.argv) != 2:
+    """if len(sys.argv) != 2:
         sys.exit("Usage: python pagerank.py corpus")
-    corpus = crawl(sys.argv[1])
+    corpus = crawl(sys.argv[1])"""
+    if len(sys.argv) != 2:
+        corpus = crawl('corpus0')
+    else:
+        corpus = crawl(sys.argv[1])
     ranks = sample_pagerank(corpus, DAMPING, SAMPLES)
     print(f"PageRank Results from Sampling (n = {SAMPLES})")
     for page in sorted(ranks):
         print(f"  {page}: {ranks[page]:.4f}")
-    """ranks = iterate_pagerank(corpus, DAMPING)
+    ranks = iterate_pagerank(corpus, DAMPING)
     print(f"PageRank Results from Iteration")
     for page in sorted(ranks):
-        print(f"  {page}: {ranks[page]:.4f}")"""
+        print(f"  {page}: {ranks[page]:.4f}")
 
 
 def crawl(directory):
@@ -117,7 +121,39 @@ def iterate_pagerank(corpus, damping_factor):
     their estimated PageRank value (a value between 0 and 1). All
     PageRank values should sum to 1.
     """
-    return corpus
+    page_rank = dict()
+    pages = list(corpus.keys())
+    total_pages = len(pages)
+    initial_probability = (1 - damping_factor) / total_pages
+    
+    for page in pages:
+        page_rank[page] = initial_probability
+        
+    has_converged = False
+    previous_rank = page_rank.copy()
+    
+    while not has_converged:
+        for page in corpus:
+            #Calculate new range for each page
+            pages_with_link_to_curr_page = list()
+            for i_page, links in corpus.items():
+                if page in links:
+                    pages_with_link_to_curr_page.append(i_page)
+            
+            inner_summatory = 0
+            for page_link in pages_with_link_to_curr_page:
+                inner_summatory += (previous_rank[page_link] / len(corpus[page_link]))
+            page_rank[page] = initial_probability + (inner_summatory * damping_factor)
+        
+        has_converged = True
+        for page in corpus:
+            #Verify if the range has converged for every page
+            if abs(previous_rank[page] - page_rank[page]) > 0.001:
+                has_converged = False
+                previous_rank = page_rank.copy()
+                break
+    
+    return page_rank
 
 
 if __name__ == "__main__":
